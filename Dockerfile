@@ -14,10 +14,14 @@ RUN apt-get update \
     && apt-get install -y apache2 unzip curl wget \
     && apt-get install -y apt-transport-https lsb-release ca-certificates \
     && wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
-    && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list \
-    && apt-get update \
+    && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
+
+RUN apt-get update \
+    && wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
+    && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
     && apt-get install -y php8.2 php8.2-dev php8.2-ldap php8.2-xml php8.2-bcmath php8.2-mbstring php8.2-xml php8.2-curl php8.2-opcache php8.2-readline php8.2-zip \
-    && mkdir /tmp/install \ 
+
+RUN mkdir /tmp/install \ 
     && cd /tmp/install  \
     && curl -LOf https://github.com/phalcon/cphalcon/releases/download/v5.3.1/phalcon-php8.2-nts-ubuntu-gcc-x64.zip \
     && unzip phalcon-php8.2-nts-ubuntu-gcc-x64.zip  \
