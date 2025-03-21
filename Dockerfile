@@ -6,7 +6,7 @@
 # - copy the pre-build extensions
 
 # syntax = docker/dockerfile:1.2
-FROM php:8.0-apache-bullseye AS BUILD
+FROM php:8-apache-bookworm AS BUILD
 LABEL AUTHOR Lucrasoft
 WORKDIR /home
 
