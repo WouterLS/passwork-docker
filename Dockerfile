@@ -16,11 +16,13 @@ RUN apt-get update \
     && wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
     && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list \
     && apt-get update \
-    && apt install -y php8.3 libapache2-mod-php8.3 php8.3-cli php8.3-bcmath php8.3-fpm php8.3-curl php8.3-gd php8.3-intl php8.3-ldap php8.3-mbstring php8.3-mysql php8.3-opcache php8.3-pgsql php8.3-soap php8.3-zip php8.3-sqlite3 php8.3-xml \
-    && apt install -y php8.3 libapache2-mod-php8.3 php8.3-cli php8.3-bcmath php8.3-fpm php8.3-curl php8.3-gd php8.3-intl php8.3-ldap php8.3-mbstring php8.3-mysql php8.3-opcache php8.3-pgsql php8.3-soap php8.3-zip php8.3-sqlite3 php8.3-xml
+    && apt-get install -y php8.2 php8.2-dev php8.2-ldap php8.2-xml php8.2-bcmath php8.2-mbstring php8.2-xml php8.2-curl php8.2-opcache php8.2-readline php8.2-zip \
+    && mkdir /tmp/install && cd /tmp/install && curl -LOf https://github.com/phalcon/cphalcon/releases/download/v5.3.1/phalcon-php8.2-nts-ubuntu-gcc-x64.zip && unzip phalcon-php8.2-nts-ubuntu-gcc-x64.zip && cp phalcon.so /usr/lib/php/20220829 && cd / && rm -rf /tmp/install \
+    && echo "extension=phalcon.so" | tee /etc/php/8.2/apache2/conf.d/30-phalcon.ini \
+    && echo "extension=phalcon.so" | tee /etc/php/8.2/cli/conf.d/30-phalcon.ini
 
-RUN echo "extension=mongodb.so" | tee /etc/php/8.3/apache2/conf.d/20-mongodb.ini \
-    && echo "extension=mongodb.so" | tee /etc/php/8.3/cli/conf.d/20-mongodb.ini \
+RUN echo "extension=mongodb.so" | tee /etc/php/8.2/apache2/conf.d/20-mongodb.ini \
+    && echo "extension=mongodb.so" | tee /etc/php/8.2/cli/conf.d/20-mongodb.ini \
     && opcache_path=$(php --ini | grep opcache | awk '{print $NF}' | sed 's/,//') \
     && /bin/echo -e 'opcache.enable=1' >> $opcache_path \
     && /bin/echo -e 'opcache.memory_consumption=192' >> $opcache_path \
@@ -30,10 +32,10 @@ RUN echo "extension=mongodb.so" | tee /etc/php/8.3/apache2/conf.d/20-mongodb.ini
     && /bin/echo -e 'opcache.revalidate_freq=0' >> $opcache_path \
     && /bin/echo -e 'opcache.preload=/var/www/config/preload.php' >> $opcache_path \
     && /bin/echo -e 'opcache.preload_user=www-data' >> $opcache_path \
-    && sed -i '/session.cookie_secure =/c session.cookie_secure = On' /etc/php/8.3/apache2/php.ini
+    && sed -i '/session.cookie_secure =/c session.cookie_secure = On' /etc/php/8.2/apache2/php.ini
 
 RUN curl -fsSL https://www.mongodb.org/static/pgp/server-7.0.asc | gpg -o /usr/share/keyrings/mongodb-server-7.0.gpg --dearmor \
-    && echo "deb http://repo.mongodb.org/apt/debian buster/mongodb-org/6.0 main" | sudo tee /etc/apt/sources.list.d/mongodb-org-6.0.list \
+    && echo "deb [ signed-by=/usr/share/keyrings/mongodb-server-7.0.gpg ] http://repo.mongodb.org/apt/debian bookworm/mongodb-org/7.0 main" | tee /etc/apt/sources.list.d/mongodb-org-7.0.list
     && apt-get update \
     && apt-get install -y mongodb-org \
     && systemctl start mongod.service \
