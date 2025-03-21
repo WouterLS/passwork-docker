@@ -17,8 +17,8 @@ RUN apt-get update -q \
     && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list \
     && apt-get update -q
 
-RUN apt-get update -q \
-    && apt-get install -y php8.2 php8.2-dev php8.2-ldap php8.2-xml php8.2-bcmath php8.2-mbstring php8.2-xml php8.2-curl php8.2-opcache php8.2-readline php8.2-zip
+#RUN apt-get update -q \
+#    && apt-get install -y php8.2 php8.2-dev php8.2-ldap php8.2-xml php8.2-bcmath php8.2-mbstring php8.2-xml php8.2-curl php8.2-opcache php8.2-readline php8.2-zip
 
 RUN mkdir /tmp/install \ 
     && cd /tmp/install  \
