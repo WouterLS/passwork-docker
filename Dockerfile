@@ -10,15 +10,13 @@ FROM php:8-apache-bookworm AS BUILD
 LABEL AUTHOR Lucrasoft
 WORKDIR /home
 
-RUN apt-get update \
+RUN apt-get update -q \
     && apt-get install -y apache2 unzip curl wget \
     && apt-get install -y apt-transport-https lsb-release ca-certificates \
     && wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
     && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list
 
-RUN apt-get update \
-    && wget -O /etc/apt/trusted.gpg.d/php.gpg https://packages.sury.org/php/apt.gpg \
-    && echo "deb https://packages.sury.org/php/ $(lsb_release -sc) main" > /etc/apt/sources.list.d/php.list \
+RUN apt-get update -q \
     && apt-get install -y php8.2 php8.2-dev php8.2-ldap php8.2-xml php8.2-bcmath php8.2-mbstring php8.2-xml php8.2-curl php8.2-opcache php8.2-readline php8.2-zip
 
 RUN mkdir /tmp/install \ 
