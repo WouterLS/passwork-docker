@@ -24,7 +24,7 @@ RUN mkdir /tmp/install \
     && cd /tmp/install  \
     && curl -LOf https://github.com/phalcon/cphalcon/releases/download/v5.3.1/phalcon-php8.2-nts-ubuntu-gcc-x64.zip \
     && unzip phalcon-php8.2-nts-ubuntu-gcc-x64.zip  \
-    && mkdir /usr/lib/php/20220829 \
+    && mkdir -p /usr/lib/php/20220829/ \
     && cp phalcon.so /usr/lib/php/20220829 \
     && cd /  \
     && rm -rf /tmp/install \
